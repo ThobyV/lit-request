@@ -1,0 +1,41 @@
+{
+  "name": "lit",
+  "version": "0.1.0",
+  "description": "Javascript byte sized fetch based http request library ",
+  "source": "src/index.js",
+  "main": "dist/lit-request.js",
+  "scripts": {
+    "build": "microbundle --compress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThobyV/lit-request.git"
+  },
+  "keywords": [
+    "fetch",
+    "https",
+    "request",
+    "library",
+    "javascript",
+    "light-weight",
+    "small",
+    "microlib",
+    "browser",
+    "async",
+    "await",
+    "support",
+    "free",
+    "open",
+    "source",
+    "little"
+  ],
+  "author": "thobyv",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThobyV/lit-request.git/issues"
+  },
+  "homepage": "https://github.com/ThobyV/lit-request#readme",
+  "devDependencies": {
+    "microbundle": "^0.12.3"
+  }
+}
