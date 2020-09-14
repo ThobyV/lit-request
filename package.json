@@ -5,7 +5,7 @@
   "source": "src/index.js",
   "main": "dist/lit-request.js",
   "scripts": {
-    "build": "microbundle --compress"
+    "build": "microbundle"
   },
   "repository": {
     "type": "git",
