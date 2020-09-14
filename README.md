@@ -1,6 +1,8 @@
 # lit-request
 
-Lit request is a small, byte-sized micro-library which provides the most important parts of Axios which alot of developers love using the ``browser native fetch``  under the hood. Lit is for developers who prefer all things small and ligh-weight. Heavily inspired by Axios/Redaxios.
+Lit request is a small, byte-sized micro-library which provides the most important parts of Axios which alot of developers love using the [browser native Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)  under the hood. Most browsers support Fetch and popular JavaScript tools like Preact, React come with polyfills although lit-request can be used on many other tools like Vue etc.
+
+Lit is for developers who prefer all things small and ligh-weight. Heavily inspired by Axios/Redaxios.
 
 
 
