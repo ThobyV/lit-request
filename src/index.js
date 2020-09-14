@@ -5,8 +5,7 @@
 // validateStatus
 // default
 // req/res interceptors
-
-//final state of every request is always defaulted by null,something or overwritten
+// final state of every request is always defaulted by null,something or overwritten
 
 let lit = (function create(opts) {
     //deepmerge to deep clone object and merge otf changes
@@ -17,10 +16,10 @@ let lit = (function create(opts) {
     }
 
     function method(reqType) {
-        return function() {
+        return function () {
             let args = arguments;
             let config = args[args.length - 1];
-            let url = args[0];        
+            let url = args[0];
             let data = args.length > 2 && args[1]
             let method = reqType;
             return request(deepMerge({ url, data, method }, config))
@@ -84,9 +83,10 @@ let lit = (function create(opts) {
     }
 
     function dataHelper(data, headers) {
-        if (headers) {
-            return headers['Content-Type'] == 'application/json'
-                ? JSON.stringify(data) : data;
+        if (headers && headers['Content-Type']) {
+            if (headers['Content-Type'] !== 'application/json') {
+                return data;
+            }
         }
         return data && JSON.stringify(data);
     }
