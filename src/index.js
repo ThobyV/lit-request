@@ -18,9 +18,9 @@ let lit = (function create(opts) {
     function method(reqType) {
         return function () {
             let args = arguments;
-            let config = args[args.length - 1];
-            let url = args[0];
-            let data = args.length > 2 && args[1]
+            let url = args[0];            
+            let data = args[1];
+            let config = data ? args[2] : args[1];            
             let method = reqType;
             return request(deepMerge({ url, data, method }, config))
         }
