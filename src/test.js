@@ -15,7 +15,6 @@ let lit = (function create(opts) {
         return request(config)
     }
 
-
     function method(method) {
         return function (url, data, config) {
             if (!config) {
@@ -142,3 +141,22 @@ let lit = (function create(opts) {
 
     return lit
 }());
+
+let header = {
+    'Access-Control-Allow-Origin': '*',
+    'Authorization': 'sasa',
+}
+
+let config = {
+    url: 'https://fb.me',
+    method: 'POST',
+    headers: { ...header },
+    validateStatus: function (status) {
+        return false
+    }
+}
+
+let llit = lit.create({ baseUrl: 'google', timeout: 4000, withCredentials: true })
+console.log(llit.post('devt.to', { name: 'vitor' }, { headers: { 'auth': 'ccc' } }))
+console.log(lit.get('string', { headers: { 'Content-Type': 'multipart' } }))
+// console.log(config)
