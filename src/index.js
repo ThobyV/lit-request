@@ -7,138 +7,140 @@
 // req/res interceptors
 // final state of every request is always defaulted by null,something or overwritten
 
-let lit = (function create(opts) {
-    //deepmerge to deep clone object and merge otf changes
-    let defaults = deepMerge({}, opts);
-
-    function lit(config) {
-        return request(config)
-    }
-
-
-    function method(method) {
-        return function (url, data, config) {
-            if (!config) {
-                config = data;
-                data = null;
-            }
-            return request(deepMerge({ url, data, method }, config))
+(function create(options) {
+  function deepMerge(base, config) {
+    const newObj = Object.assign({}, base, config);
+    for (const i in config) {
+      if (Array.isArray(config[i])) {
+        newObj[i] = newObj[i].concat(base[i]);
+      }
+      if (typeof config[i] === 'object' && !Array.isArray(config[i])) {
+        if (!newObj[i]) {
+          newObj[i] = {};
         }
+        newObj[i] = deepMerge(base[i], config[i]);
+      }
     }
+    return newObj;
+  }
 
-    function icp() { }
+  const defaults = deepMerge({}, options);
 
-    icp.request = {};
-    icp.response = {};
+  function icp() {}
 
-    icp.request.use = icpType('request');
-    icp.response.use = icpType('response');
+  icp.request = {};
+  icp.response = {};
 
-    function icpType(prop) {
-        return function (callback, error) {
-            icp[prop].callback = callback;
-            icp[prop].error = error;
-        }
+  function icpType(prop) {
+    return function (callback, error) {
+      icp[prop].callback = callback;
+      icp[prop].error = error;
+    };
+  }
+
+  icp.request.use = icpType('request');
+  icp.response.use = icpType('response');
+
+  function request(opts) {
+    if (typeof opts === 'string') opts = { method: 'get', url: opts };
+    const url = defaults.baseUrl;
+    const config = icp.request.callback
+      ? icp.request.callback(deepMerge({}, opts))
+      : opts;
+    const temp = deepMerge(defaults, config);
+    temp.url = url ? url + opts.url : opts.url;
+    // return body(temp);
+    // return callFetch(temp)
+  }
+
+  function lit(config) {
+    return request(config);
+  }
+
+  function m(method) {
+    return function (url, data, config) {
+      if (!config) {
+        config = data;
+        data = null;
+      }
+      return request(deepMerge({ url, data, method }, config));
+    };
+  }
+
+  function dataHelper(data, headers) {
+    if (headers && headers['Content-Type']) {
+      if (headers['Content-Type'] !== 'application/json') {
+        return data;
+      }
     }
+    return data && JSON.stringify(data);
+  }
 
-    function request(opts) {
-        if (typeof opts === 'string') opts = { method: 'get', url: opts }
-        let url = defaults.baseUrl;
-        let config = icp.request.callback ?
-            icp.request.callback(deepMerge({}, opts)) : opts;
-        let temp = deepMerge(defaults, config);
-        temp.url = url ? url + opts.url : opts.url;
-        return body(temp);
-        //return callFetch(temp)
-    }
+  function body(_opts) {
+    return {
+      method: _opts.method,
+      headers: _opts.headers,
+      body: dataHelper(_opts.data, _opts.headers),
+      signal: _opts.cancelToken,
+      credentials: _opts.withCredentials ? 'same-origin' : 'omit',
+    };
+  }
 
-    function callFetch(opts) {
-        //checck fpr request interceptor - maybe check ur config or stuff before req send
-        return fetch(opts.url, body(opts))
-            .then((res) => {
-                let ok = opts.validateStatus ?
-                    opts.validateStatus(res.status) : res.ok
-                if (ok) {
-                    function toJson() {
-                        opts.responseType = 'json';
-                        return res.json();
-                    }
+  function callFetch(opts) {
+    return fetch(opts.url, body(opts)).then((res) => {
+      function toJson() {
+        opts.responseType = 'json';
+        return res.json();
+      }
 
-                    let hasData = opts.responseType == 'stream' ?
-                        res.body : opts.responseType ?
-                            res[opts.responseType]() : toJson()
+      const ok = opts.validateStatus ? opts.validateStatus(res.status) : res.ok;
+      if (ok) {
+        const hasData =
+          opts.responseType == 'stream'
+            ? res.body
+            : opts.responseType
+            ? res[opts.responseType]()
+            : toJson();
 
-                    return hasData.then((data) => {
-                        res.data = responseType == 'json' ? JSON.parse(data) : data;
-                        res.config = opts;
-                        return icp.response.callback ?
-                            Promise.resolve(icp.response.callback(res))
-                            :
-                            Promise.resolve(res)
-                    }, (err) => Promise.reject(err))
-                }
-                return icp.response.error ?
-                    icp.response.error(res) : Promise.reject(res)
-            })
-    }
+        return hasData.then(
+          (data) => {
+            res.data = opts.responseType == 'json' ? JSON.parse(data) : data;
+            res.config = opts;
+            return icp.response.callback
+              ? Promise.resolve(icp.response.callback(res))
+              : Promise.resolve(res);
+          },
+          (err) => Promise.reject(err)
+        );
+      }
+      return icp.response.error ? icp.response.error(res) : Promise.reject(res);
+    });
+  }
 
-    function dataHelper(data, headers) {
-        if (headers && headers['Content-Type']) {
-            if (headers['Content-Type'] !== 'application/json') {
-                return data;
-            }
-        }
-        return data && JSON.stringify(data);
-    }
+  function cancelToken() {
+    return new AbortController();
+  }
 
-    function deepMerge(base, config) {
-        var newObj = Object.assign({}, base, config);
-        for (let key in config) {
-            if (Array.isArray(config[key])) {
-                newObj[key] = newObj[key].concat(base[key])
-            }
-            if (typeof config[key] === 'object'
-                && !Array.isArray(config[key])) {
-                if (!newObj[key]) { newObj[key] = {} }
-                newObj[key] = deepMerge(base[key], config[key]);
-            }
-        }
-        return newObj;
-    }
+  cancelToken.source = function () {
+    const is = {};
+    const has = cancelToken();
+    is.token = has.signal;
+    is.cancel = function () {
+      has.abort();
+    };
+    return is;
+  };
 
+  lit.request = request;
+  lit.create = create;
+  lit.interceptors = icp;
+  lit.CancelToken = cancelToken;
+  lit.defaults = defaults;
+  lit.get = m('GET');
+  lit.delete = m('DELETE');
+  lit.post = m('POST');
+  lit.put = m('PUT');
+  lit.patch = m('PATCH');
 
-    function body(opts) {
-        return {
-            method: opts.method,
-            headers: opts.headers,
-            body: dataHelper(opts.data, opts.headers),
-            signal: opts.cancelToken,
-            credentials: opts.withCredentials ? 'same-origin' : 'omit',
-        }
-    }
-
-    function cancelToken() {
-        return new AbortController();
-    }
-
-    cancelToken.source = function () {
-        let is = {};
-        let has = cancelToken();
-        is.token = has.signal;
-        is.cancel = function () { has.abort(); }
-        return is;
-    }
-
-    lit.request = request;
-    lit.create = create;
-    lit.interceptors = icp;
-    lit.CancelToken = cancelToken;
-    lit.defaults = defaults;
-    lit.get = method('GET')
-    lit.delete = method('DELETE')
-    lit.post = method('POST')
-    lit.put = method('PUT')
-    lit.patch = method('PATCH')
-
-    return lit
-}());
+  return lit;
+})();
