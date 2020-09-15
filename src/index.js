@@ -42,7 +42,6 @@
   icp.response.use = icpType('response');
 
   function request(opts) {
-    if (typeof opts === 'string') opts = { method: 'get', url: opts };
     const url = defaults.baseUrl;
     const config = icp.request.callback
       ? icp.request.callback(deepMerge({}, opts))
@@ -61,7 +60,6 @@
     return function (url, data, config) {
       if (!config) {
         config = data;
-        data = null;
       }
       return request(deepMerge({ url, data, method }, config));
     };
