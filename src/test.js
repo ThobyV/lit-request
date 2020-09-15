@@ -19,7 +19,6 @@ let lit = (function create(opts) {
     return function (url, data, config) {
       if (!config) {
         config = data;
-        data = null;
       }
       return request(deepMerge({ url, data, method }, config));
     };
@@ -41,7 +40,6 @@ let lit = (function create(opts) {
   }
 
   function request(opts) {
-    if (typeof opts === "string") opts = { method: "get", url: opts };
     let url = defaults.baseUrl;
     let config = icp.request.callback
       ? icp.request.callback(deepMerge({}, opts))
@@ -169,5 +167,5 @@ let llit = lit.create({
 console.log(
   llit.post("devt.to", { name: "vitor" }, { headers: { auth: "ccc" } })
 );
-console.log(lit.get("string", { headers: { "Content-Type": "multipart" } }));
+console.log(lit.get("string"));
 // console.log(config)j

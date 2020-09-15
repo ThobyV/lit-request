@@ -20,9 +20,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "prefer-object-spread": "off",
-        "guard-for-in": "off",
-        "quotes": "error",
+        "prettier/prettier": "error",
         "eqeqeq": "off",
         "no-param-reassign": "off",
         "no-nested-ternary": "off",
@@ -31,6 +29,8 @@
         "implicit-arrow-linebreak": "off",
         "consistent-return": "off",
         "no-restricted-syntax": "off",
-        "no-await-in-loop": "off"     
+        "no-await-in-loop": "off",
+        "prefer-object-spread": "off",
+        "guard-for-in": "off"
     }
 }
