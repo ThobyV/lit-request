@@ -20,6 +20,9 @@
         }
         newObj[i] = deepMerge(base[i], config[i]);
       }
+      if (config[i] == (null || undefined)) {
+        newObj[i] = config[i];
+      }
     }
     return newObj;
   }
@@ -60,6 +63,7 @@
     return function (url, data, config) {
       if (!config) {
         config = data;
+        data = null;
       }
       return request(deepMerge({ url, data, method }, config));
     };
