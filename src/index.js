@@ -1,18 +1,24 @@
 (function create(options) {
+  function isObject(val) {
+    return typeof val == 'object';
+  }
+
   function deepMerge(base, config) {
     const newObj = Object.assign({}, base, config);
-    for (const i in config) {
-      if (Array.isArray(config[i])) {
-        newObj[i] = newObj[i].concat(base[i]);
-      }
-      if (typeof config[i] === 'object' && !Array.isArray(config[i])) {
-        if (!newObj[i]) {
-          newObj[i] = {};
+    if (isObject(base) && isObject(config)) {
+      for (const i in config) {
+        if (Array.isArray(config[i])) {
+          newObj[i].concat(base[i]);
         }
-        newObj[i] = deepMerge(base[i], config[i]);
-      }
-      if (config[i] == (null || undefined)) {
-        newObj[i] = config[i];
+        if (isObject(config[i]) && !Array.isArray(config[i])) {
+          if (!newObj[i]) {
+            newObj[i] = {};
+          }
+          newObj[i] = deepMerge(base[i], config[i]);
+        }
+        if (config[i] == (null || undefined)) {
+          newObj[i] = config[i];
+        }
       }
     }
     return newObj;
