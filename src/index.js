@@ -10,7 +10,11 @@
         if (Array.isArray(config[i])) {
           newObj[i].concat(base[i]);
         }
-        if (isObject(config[i]) && !Array.isArray(config[i])) {
+        if (
+          isObject(config[i]) &&
+          !Array.isArray(config[i]) &&
+          !(config[i] instanceof AbortSignal)
+        ) {
           if (!newObj[i]) {
             newObj[i] = {};
           }
