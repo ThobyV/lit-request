@@ -86,10 +86,7 @@
 
   function callFetch(opts) {
     return fetch(opts.url, body(opts)).then((res) => {
-      function toJson() {
-        opts.responseType = 'json';
-        return res.json();
-      }
+      res.config = opts;
 
       const ok = opts.validateStatus ? opts.validateStatus(res.status) : res.ok;
       if (ok) {
@@ -98,12 +95,11 @@
             ? res.body
             : opts.responseType
             ? res[opts.responseType]()
-            : toJson();
+            : res.json();
 
         return hasData.then(
           (data) => {
-            res.data = opts.responseType == 'json' ? JSON.parse(data) : data;
-            res.config = opts;
+            res.data = data;
             return icp.response.callback
               ? Promise.resolve(icp.response.callback(res))
               : Promise.resolve(res);
