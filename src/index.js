@@ -1,12 +1,3 @@
-// Method alias
-// cancelRequest
-// config
-// responstype
-// validateStatus
-// default
-// req/res interceptors
-// final state of every request is always defaulted by null,something or overwritten
-
 (function create(options) {
   function deepMerge(base, config) {
     const newObj = Object.assign({}, base, config);
@@ -59,9 +50,11 @@
     return request(config);
   }
 
-  function m(method) {
+  const s = 'set';
+
+  function m(method, type) {
     return function (url, data, config) {
-      if (!config) {
+      if (!config && type !== s) {
         config = data;
         data = null;
       }
@@ -136,9 +129,11 @@
   lit.defaults = defaults;
   lit.get = m('GET');
   lit.delete = m('DELETE');
-  lit.post = m('POST');
-  lit.put = m('PUT');
-  lit.patch = m('PATCH');
+  lit.head = m('HEAD');
+  lit.options = m('OPTIONS');
+  lit.post = m('POST', s);
+  lit.put = m('PUT', s);
+  lit.patch = m('PATCH', s);
 
   return lit;
 })();
