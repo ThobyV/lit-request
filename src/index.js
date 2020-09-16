@@ -96,7 +96,7 @@
       if (ok) {
         const hasData =
           opts.responseType == 'stream'
-            ? res.body
+            ? Promise.resolve(res.body)
             : opts.responseType
             ? res[opts.responseType]()
             : res.json();
