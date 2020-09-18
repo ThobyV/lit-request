@@ -15,7 +15,7 @@ Inspired by [Axios](https://github.com/axios/axios) / [Redaxios](https://github.
 
 Yes, it's adviced if you prefer to, Axios is amazing, battle-tested and supports node js with more features than ``lit-request``.  
 
-You can use this library if you like in cases where bundle size and lighweight performance matters, for quick demos or hackathons and other project that runs on any modern broswer.
+You may find lit useful for projects where **bundle size** and **lighweight performance** matters as well as for **quick demos**, **codepens**, **sandboxes**, **hackathons** and other projects that runs on any modern broswer.
 
 
 ### API
