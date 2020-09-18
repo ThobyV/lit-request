@@ -64,6 +64,7 @@ MIT License 2020
     return request(config);
   }
 
+  // Id for post, put, patch requests with data as possible payload
   const s = 'set';
 
   function m(method, type) {
