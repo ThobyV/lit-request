@@ -1,3 +1,7 @@
+/*
+MIT License 2020
+*/
+
 (function create(options) {
   function isObject(val) {
     return typeof val == 'object';
