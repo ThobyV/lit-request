@@ -1,19 +1,21 @@
 # lit-request
 
-``lit-request`` is a byte-sized (currently ``(700) bytes minified /  gzipped``) micro-library which provides common parts of [Axios](https://github.com/axios/axios) which developers find very useful. 
-
-Using the [browser native Fetch() API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) under the hood, with many popular browsers having support and as well libraries like React/Preact using pollyfill. Other amazing libraries supported as well.
-
-``lit`` is Inspired by [Axios](https://github.com/axios/axios) / [Redaxios](https://github.com/developit/redaxios) with API and simplicity.
+``lit-request`` is a byte-sized (currently ``(700) bytes minified /  gzipped``) micro-library which provides the awesome parts of [Axios](https://github.com/axios/axios) which many developers find very useful.  
 
 
+``lit-request`` just is just an abstraction on the browser native [fetch()](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) API which does all the work under the hood with many popular browsers having support and as popular libraries like React/Preact using pollyfills when needed, Other amazing libraries supported as well.  
 
 
-**Can I use Just Axios?** 
+>Inspired by [Axios](https://github.com/axios/axios) / [Redaxios]>(https://github.com/developit/redaxios) with API and simplicity.  
 
-Yes, it's adviced if you prefer to, as axios is battle-tested and supports node js with more features than lit-request. Lit is advantaged being small because it uses ``fetch`` which does all the work and is mostly supported on ``browsers``. 
 
-**_You can use this library if you like in cases where bundle size and lighweight performance matters, for quick demos or hackathons and other project that runs on any modern broswer._**
+
+**Can I use Just Axios?**  
+
+
+Yes, it's adviced if you prefer to, Axios is amazing, battle-tested and supports node js with more features than ``lit-request``.  
+
+You can use this library if you like in cases where bundle size and lighweight performance matters, for quick demos or hackathons and other project that runs on any modern broswer.
 
 
 ### API
