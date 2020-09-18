@@ -1,16 +1,16 @@
-# lit-request
+# lit-request  🌊
 
-``lit-request`` is a byte-sized (currently ``(700) bytes minified /  gzipped``) micro-library which provides the awesome parts of [Axios](https://github.com/axios/axios) which many developers find very useful.  
-
-
-``lit-request`` just is just an abstraction on the browser native [fetch()](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) API which does all the work under the hood with many popular browsers having support and as popular libraries like React/Preact using pollyfills when needed, Other amazing libraries supported as well.  
+lit-request is a byte-sized (currently ``(700) bytes minified /  gzipped``) micro-library which provides the awesome parts of [Axios](https://github.com/axios/axios) which many developers find very useful.  
 
 
->Inspired by [Axios](https://github.com/axios/axios) / [Redaxios]>(https://github.com/developit/redaxios) with API and simplicity.  
+It's an abstraction layer based on the browser native [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) which does all the work under the hood with many popular browsers having support and as popular libraries like React/Preact using pollyfills when needed, Other amazing libraries supported as well.  
+
+
+Inspired by [Axios](https://github.com/axios/axios) / [Redaxios](https://github.com/developit/redaxios) with API and simplicity.  
 
 
 
-**Can I use Just Axios?**  
+**Can't I Just use Axios? 😄**  
 
 
 Yes, it's adviced if you prefer to, Axios is amazing, battle-tested and supports node js with more features than ``lit-request``.  
