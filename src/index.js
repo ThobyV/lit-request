@@ -8,26 +8,22 @@ MIT License 2020
   function isObject(val) {
     return typeof val == 'object';
   }
-
   function deepMerge(base, config) {
     const newObj = Object.assign({}, base, config);
     if (isObject(base) && isObject(config)) {
       for (const i in config) {
+        if (config[i] == (null || undefined)) {
+          newObj[i] = config[i];
+        }
         if (Array.isArray(config[i])) {
           newObj[i].concat(base[i]);
         }
-        if (
-          isObject(config[i]) &&
-          !Array.isArray(config[i]) &&
-          !(config[i] instanceof AbortSignal)
-        ) {
-          if (!newObj[i]) {
-            newObj[i] = {};
+        if (isObject(config[i]) && !Array.isArray(config[i])) {
+          if (!base[i]) {
+            newObj[i] = Object.assign({}, { [i]: config[i] });
+          } else {
+            newObj[i] = deepMerge(base[i], config[i]);
           }
-          newObj[i] = deepMerge(base[i], config[i]);
-        }
-        if (config[i] == (null || undefined)) {
-          newObj[i] = config[i];
         }
       }
     }
