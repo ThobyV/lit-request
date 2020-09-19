@@ -1,7 +1,9 @@
 /*
 MIT License 2020
 */
-
+//  TODO: make sure other custom objects like formData and blob work
+//  TODO: use indexOf to find content-type match instead of exact string
+//  TODO: add simple auth
 (function create(options) {
   function isObject(val) {
     return typeof val == 'object';
@@ -100,14 +102,31 @@ MIT License 2020
     return fetch(opts.url, body(opts)).then((res) => {
       res.config = opts;
 
-      const ok = opts.validateStatus ? opts.validateStatus(res.status) : res.ok;
-      if (ok) {
-        const hasData =
-          opts.responseType == 'stream'
+      function reject(err) {
+        return icp.response.error
+          ? icp.response.error(err)
+          : Promise.reject(err);
+      }
+
+      function fullData() {
+        // most requests respond with a body, but head requests don't, handle both cases
+        if (res.body) {
+          return opts.responseType == 'stream'
             ? Promise.resolve(res.body)
             : opts.responseType
             ? res[opts.responseType]()
             : res.json();
+        }
+        return Promise.resolve();
+      }
+
+      /* decide whether to resolve or reject based on custom validate status boolean
+       or response status codes
+      */
+      const ok = opts.validateStatus ? opts.validateStatus(res.status) : res.ok;
+      if (ok) {
+        // most http requests have to send response data of some sort, handle it
+        const hasData = fullData();
 
         return hasData.then(
           (data) => {
@@ -116,10 +135,10 @@ MIT License 2020
               ? Promise.resolve(icp.response.callback(res))
               : Promise.resolve(res);
           },
-          (err) => Promise.reject(err)
+          (err) => reject(err)
         );
       }
-      return icp.response.error ? icp.response.error(res) : Promise.reject(res);
+      return reject(res);
     });
   }
 
