@@ -12,18 +12,21 @@ MIT License 2020
     const newObj = Object.assign({}, base, config);
     if (isObject(base) && isObject(config)) {
       for (const i in config) {
-        if (config[i] == (null || undefined)) {
-          newObj[i] = config[i];
-        }
         if (Array.isArray(config[i])) {
           newObj[i].concat(base[i]);
         }
-        if (isObject(config[i]) && !Array.isArray(config[i])) {
-          if (!base[i]) {
-            newObj[i] = Object.assign({}, { [i]: config[i] });
-          } else {
-            newObj[i] = deepMerge(base[i], config[i]);
+        if (
+          isObject(config[i]) &&
+          !Array.isArray(config[i]) &&
+          config[i].constructor === Object
+        ) {
+          if (!newObj[i]) {
+            newObj[i] = {};
           }
+          newObj[i] = deepMerge(base[i], config[i]);
+        }
+        if (config[i] == (null || undefined)) {
+          newObj[i] = config[i];
         }
       }
     }
