@@ -8,6 +8,7 @@ MIT License 2020
   function isObject(val) {
     return typeof val == 'object';
   }
+
   function deepMerge(base, config) {
     const newObj = Object.assign({}, base, config);
     if (isObject(base) && isObject(config)) {
@@ -50,34 +51,6 @@ MIT License 2020
   icp.request.use = icpType('request');
   icp.response.use = icpType('response');
 
-  function request(opts) {
-    const url = defaults.baseUrl;
-    const config = icp.request.callback
-      ? icp.request.callback(deepMerge({}, opts))
-      : opts;
-    const temp = deepMerge(defaults, config);
-    temp.url = url ? url + opts.url : opts.url;
-    // return body(temp);
-    // return callFetch(temp)
-  }
-
-  function lit(config) {
-    return request(config);
-  }
-
-  // Id for post, put, patch requests with data as possible payload
-  const s = 'set';
-
-  function m(method, type) {
-    return function (url, data, config) {
-      if (!config && type !== s) {
-        config = data;
-        data = null;
-      }
-      return request(deepMerge({ url, data, method }, config));
-    };
-  }
-
   function dataHelper(data, headers) {
     if (headers && headers['Content-Type']) {
       if (headers['Content-Type'] !== 'application/json') {
@@ -101,13 +74,13 @@ MIT License 2020
     return fetch(opts.url, body(opts)).then((res) => {
       res.config = opts;
 
-      function reject(err) {
+      function reject(error) {
         return icp.response.error
-          ? icp.response.error(err)
-          : Promise.reject(err);
+          ? icp.response.error(error)
+          : Promise.reject(error);
       }
 
-      function fullData() {
+      function resolveToCompletion() {
         // most requests respond with a body, but head requests don't, handle both cases
         if (res.body) {
           return opts.responseType == 'stream'
@@ -125,7 +98,7 @@ MIT License 2020
       const ok = opts.validateStatus ? opts.validateStatus(res.status) : res.ok;
       if (ok) {
         // most http requests have to send response data of some sort, handle it
-        const hasData = fullData();
+        const hasData = resolveToCompletion();
 
         return hasData.then(
           (data) => {
@@ -134,11 +107,38 @@ MIT License 2020
               ? Promise.resolve(icp.response.callback(res))
               : Promise.resolve(res);
           },
-          (err) => reject(err)
+          (error) => reject(error)
         );
       }
       return reject(res);
     });
+  }
+
+  function request(opts) {
+    const url = defaults.baseUrl;
+    const config = icp.request.callback
+      ? icp.request.callback(deepMerge({}, opts))
+      : opts;
+    const temp = deepMerge(defaults, config);
+    temp.url = url ? url + opts.url : opts.url;
+    return callFetch(temp);
+  }
+
+  function lit(config) {
+    return request(config);
+  }
+
+  // Id for post, put, patch requests with data as possible payload
+  const s = 'set';
+
+  function m(method, type) {
+    return function (url, data, config) {
+      if (!config && type !== s) {
+        config = data;
+        data = null;
+      }
+      return request(deepMerge({ url, data, method }, config));
+    };
   }
 
   function cancelToken() {
