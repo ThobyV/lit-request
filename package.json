@@ -1,5 +1,5 @@
 {
-  "name": "lit",
+  "name": "lit-request",
   "version": "0.1.0",
   "description": "Javascript byte sized fetch based http request library ",
   "source": "src/index.js",
