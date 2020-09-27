@@ -4,6 +4,8 @@
   "description": "Javascript byte sized fetch based http request library ",
   "source": "src/index.js",
   "main": "dist/lit-request.js",
+  "umd:main": "dist/lit-request.umd.js",
+  "module": "dist/lit-request.module.js",
   "scripts": {
     "build": "microbundle",
     "test": "npm run prettier-check && eslint 'src/**/index.js'",
