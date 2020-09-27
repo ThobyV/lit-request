@@ -17,21 +17,9 @@
   },
   "keywords": [
     "fetch",
-    "https",
     "request",
-    "library",
-    "javascript",
     "light-weight",
-    "small",
-    "microlib",
-    "browser",
-    "async",
-    "await",
-    "support",
-    "free",
-    "open",
-    "source",
-    "little"
+    "lit"
   ],
   "author": "thobyv",
   "license": "ISC",
