@@ -1,10 +1,8 @@
 /*
 MIT License 2020
 */
-//  TODO: make sure other custom objects like formData and blob work
-//  TODO: use indexOf to find content-type match instead of exact string
-//  TODO: add simple auth
-(function create(options) {
+
+export default (function create(options) {
   function isObject(val) {
     return typeof val == 'object';
   }
@@ -74,10 +72,10 @@ MIT License 2020
     return fetch(opts.url, body(opts)).then((res) => {
       res.config = opts;
 
-      function reject(error) {
+      function reject(err) {
         return icp.response.error
-          ? icp.response.error(error)
-          : Promise.reject(error);
+          ? icp.response.error(err)
+          : Promise.reject(err);
       }
 
       function resolveToCompletion() {
