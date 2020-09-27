@@ -1,6 +1,6 @@
 {
   "name": "lit-request",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Javascript byte sized fetch based http request library ",
   "source": "src/index.js",
   "main": "dist/lit-request.js",
@@ -8,7 +8,7 @@
     "build": "microbundle",
     "test": "npm run prettier-check && eslint 'src/**/index.js'",
     "prettier-format": "prettier 'src/**/index.js' --write",
-    "prettier-check":  "prettier 'src/**/index.js' --check",
+    "prettier-check": "prettier 'src/**/index.js' --check",
     "lint": "eslint --fix 'src/**/index.js'"
   },
   "repository": {
