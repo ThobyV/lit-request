@@ -78,7 +78,7 @@ export default (function create(options) {
           : Promise.reject(err);
       }
 
-      function resolveToCompletion() {
+      function toCompletion() {
         // most requests respond with a body, but head requests don't, handle both cases
         if (res.body) {
           return opts.responseType == 'stream'
@@ -96,7 +96,7 @@ export default (function create(options) {
       const ok = opts.validateStatus ? opts.validateStatus(res.status) : res.ok;
       if (ok) {
         // most http requests have to send response data of some sort, handle it
-        const hasData = resolveToCompletion();
+        const hasData = toCompletion();
 
         return hasData.then(
           (data) => {
