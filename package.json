@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ThobyV/lit-request.git"
+    "url": "git+https://github.com/thobyv/lit-request.git"
   },
   "keywords": [
     "fetch",
@@ -22,11 +22,11 @@
     "lit"
   ],
   "author": "thobyv",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ThobyV/lit-request.git/issues"
+    "url": "https://github.com/thobyv/lit-request.git/issues"
   },
-  "homepage": "https://github.com/ThobyV/lit-request#readme",
+  "homepage": "https://github.com/thobyv/lit-request#readme",
   "devDependencies": {
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
