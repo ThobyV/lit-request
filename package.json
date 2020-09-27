@@ -1,6 +1,6 @@
 {
   "name": "lit-request",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Javascript byte sized fetch based http request library ",
   "source": "src/index.js",
   "main": "dist/lit-request.js",
